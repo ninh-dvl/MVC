@@ -1,17 +1,17 @@
 <?php
 namespace MVC\Controllers;
-use MVC\Models\Task;
+
+use MVC\Models\TaskRepository;
+use MVC\Models\TaskModel;
 use MVC\Core\Controller;
 
-class tasksController extends Controller
+class TasksController extends Controller
 {
     function index()
     {
-        // require(ROOT . 'Models/Task.php');
-
-        $tasks = new Task();
-
-        $d['tasks'] = $tasks->showAllTasks();
+       
+        $tasks = new TaskRepository();
+        $d['tasks'] = $tasks->getAll();
         $this->set($d);
         $this->render("index");
     }
@@ -20,11 +20,12 @@ class tasksController extends Controller
     {
         if (isset($_POST["title"]))
         {
-            // require(ROOT . 'Models/Task.php');
-
-            $task= new Task();
-
-            if ($task->create($_POST["title"], $_POST["description"]))
+            $taskSave = new TaskRepository();
+            $tasks = new TaskModel();
+            $tasks->setTitle($_POST["title"]);
+            $tasks->setDescription($_POST["description"]);
+            $tasks->setCreate(date("Y-m-d H:i:s"));
+            if ($taskSave->add($tasks))
             {
                 header("Location: " . WEBROOT . "tasks/index");
             }
@@ -35,14 +36,20 @@ class tasksController extends Controller
 
     function edit($id)
     {
-        // require(ROOT . 'Models/Task.php');
-        $task= new Task();
-
-        $d["task"] = $task->showTask($id);
+       
+        $taskEdit = new TaskRepository();
+       
+        $d["task"] = $taskEdit->get($id);
 
         if (isset($_POST["title"]))
         {
-            if ($task->edit($id, $_POST["title"], $_POST["description"]))
+            $tasks = new TaskModel();
+            $tasks->setId($id);
+            $tasks->setTitle($_POST["title"]);
+            $tasks->setDescription($_POST["description"]);
+            $tasks->setUpdate(date("Y-m-d H:i:s"));
+            $tasks->setCreate($tasks->setCreate($id));
+            if ($taskEdit->edit($tasks))
             {
                 header("Location: " . WEBROOT . "tasks/index");
             }
@@ -53,9 +60,7 @@ class tasksController extends Controller
 
     function delete($id)
     {
-        // require(ROOT . 'Models/Task.php');
-
-        $task = new Task();
+        $task = new TaskRepository();
         if ($task->delete($id))
         {
             header("Location: " . WEBROOT . "tasks/index");
