@@ -7,6 +7,7 @@ use MVC\Core\ResourceModel;
 
     class TaskResourceModel extends ResourceModel
     {
+        //New table
         public function __construct()
         {
             $task = new TaskModel();

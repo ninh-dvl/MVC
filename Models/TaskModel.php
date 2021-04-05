@@ -11,6 +11,7 @@ use MVC\Core\Model;
         protected $updated_at;
         protected $created_at;
 
+        //get ,set ID
         public function getId()
         {
             return $this->id;
@@ -21,6 +22,7 @@ use MVC\Core\Model;
             return $this->id = $id;
         }
         
+        //get ,set Title
         public function getTitle()
         {
             return $this->title;
@@ -31,6 +33,7 @@ use MVC\Core\Model;
             return $this->title = $title;
         }
 
+        //get ,set Description
         public function getDescription()
         {
             return $this->description;
@@ -41,6 +44,7 @@ use MVC\Core\Model;
             return $this->description = $description;
         }
 
+        //get ,set create_at
         public function getCreate()
         {
             return $this->created_at;
@@ -51,6 +55,7 @@ use MVC\Core\Model;
             return $this->created_at = $created_at;
         }
 
+        //get ,set Update_at
         public function getUpdate()
         {
             return $this->updated_at;

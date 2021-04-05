@@ -34,6 +34,7 @@ use MVC\Config\Database;
             if($model->getId() === null){
                 foreach($arr as $key => $value)
                 {
+                    //Get data and pass it into $keys[] and $placeholder[]
                     $keys[] = $key;
                     array_push($placeholder,":".$key);
                 }
