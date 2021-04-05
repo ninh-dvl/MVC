@@ -25,13 +25,42 @@ use MVC\Config\Database;
 
         public function save($model)
         {
-           
+            //Add
+           $arr = $model->getProperties();
+           $placeholder = [];
+           $listUpdate = [];
+           $keys = [];
+          
+            if($model->getId() === null){
+                foreach($arr as $key => $value)
+                {
+                    $keys[] = $key;
+                    array_push($placeholder,":".$key);
+                }
+                $strPlaceholder = implode(",",$placeholder);
+                $strKey = implode(",",$keys);
+                $sql = "INSERT INTO $this->table ({$strKey}) VALUES ({$strPlaceholder})";
+                $req = Database::getBdd()->prepare($sql);
+                return $req->execute($arr);
+
+            }else{
+               //Update
+                foreach($arr as $key => $value)
+                {
+                    // array_push($listUpdate, $key ."= :". $key);
+                    array_push($listUpdate, $key ."=". "'$value'"); 
+                }
+                $strPlaceholder = implode(", ",$listUpdate);
+                $sql = "UPDATE $this->table SET {$strPlaceholder} WHERE id = {$model->getId()}";
+                $req = Database::getBdd()->prepare($sql);
+                return $req->execute();
+            }
             
         }
 
         public function delete($id)
         {
-            $sql = "DELETE FROM $this->table WHERE id=$id";
+            $sql = "DELETE FROM $this->table WHERE id = $id";
             $req = Database::getBdd()->prepare($sql);
             return  $req->execute();
 
@@ -43,6 +72,14 @@ use MVC\Config\Database;
             $req = Database::getBdd()->prepare($sql);
             $req->execute();
             return $req->fetchAll();
+        }
+
+        public function get($id)
+        {
+            $sql = "SELECT * FROM $this->table WHERE id=$id";
+            $req = Database::getBdd()->prepare($sql);
+            $req->execute();
+            return $req->fetch();
         }
     }
 ?>

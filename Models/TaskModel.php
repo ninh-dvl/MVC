@@ -8,8 +8,8 @@ use MVC\Core\Model;
         protected $title;
         protected $description;
         protected $id;
-        protected $update_at;
-        protected $create_at;
+        protected $updated_at;
+        protected $created_at;
 
         public function getId()
         {
@@ -43,22 +43,22 @@ use MVC\Core\Model;
 
         public function getCreate()
         {
-            return $this->create_at;
+            return $this->created_at;
         }
 
-        public function setCreate($create_at)
+        public function setCreate($created_at)
         {
-            return $this->create_at = $create_at;
+            return $this->created_at = $created_at;
         }
 
         public function getUpdate()
         {
-            return $this->update_at;
+            return $this->updated_at;
         }
 
-        public function setUpdate($update_at)
+        public function setUpdate($updated_at)
         {
-            return $this->update_at = $update_at;
+            return $this->updated_at = $updated_at;
         }
         
     }

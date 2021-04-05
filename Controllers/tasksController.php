@@ -25,6 +25,7 @@ class TasksController extends Controller
             $tasks->setTitle($_POST["title"]);
             $tasks->setDescription($_POST["description"]);
             $tasks->setCreate(date("Y-m-d H:i:s"));
+            $tasks->setUpdate(date("Y-m-d H:i:s"));
             if ($taskSave->add($tasks))
             {
                 header("Location: " . WEBROOT . "tasks/index");
