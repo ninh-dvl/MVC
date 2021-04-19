@@ -2,15 +2,15 @@
 
 namespace MVC\Models;
 
-use MVC\Models\TaskResourceModel;
+use MVC\Models\StudentsResource;
 
-    class TaskRepository
+    class StudensRespository
     {
         private $taskResourceModel;
 
         function __construct()
         {
-            $this->taskResourceModel = new TaskResourceModel();
+            $this->taskResourceModel = new StudentsResource();
         }
 
         //function add
@@ -37,9 +37,9 @@ use MVC\Models\TaskResourceModel;
         }
 
         //function index
-        public function getAll($model)
+        public function getAll()
         {
-            return $this->taskResourceModel->getAll($model);
+            return $this->taskResourceModel->getAll();
         }
     }
 ?>

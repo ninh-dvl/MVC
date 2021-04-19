@@ -3,6 +3,7 @@
 namespace MVC\Core;
 
 use MVC\Config\Database;
+use PDO;
 
 
     class ResourceModel implements ResourceModelInterface
@@ -30,7 +31,7 @@ use MVC\Config\Database;
            $placeholder = [];
            $listUpdate = [];
            $keys = [];
-          
+         
             if($model->getId() === null){
                 foreach($arr as $key => $value)
                 {
@@ -48,13 +49,14 @@ use MVC\Config\Database;
                //Update
                 foreach($arr as $key => $value)
                 {
-                    // array_push($listUpdate, $key ."= :". $key);
-                    array_push($listUpdate, $key ."=". "'$value'"); 
+                    array_push($listUpdate, $key ."= :". $key);
+                    // array_push($listUpdate, $key ."=". "'$value'"); 
                 }
                 $strPlaceholder = implode(", ",$listUpdate);
-                $sql = "UPDATE $this->table SET {$strPlaceholder} WHERE id = {$model->getId()}";
+               
+                $sql = "UPDATE $this->table SET {$strPlaceholder} WHERE id = :id";
                 $req = Database::getBdd()->prepare($sql);
-                return $req->execute();
+                return $req->execute($arr);
             }
             
         }
@@ -67,12 +69,13 @@ use MVC\Config\Database;
 
         }
 
-        public function getAll()
+        public function getAll($model)
         {
-            $sql = "SELECT * FROM $this->table";
+            $properties = implode(',',array_keys($model->getProperties()));
+            $sql = "SELECT  {$properties} FROM {$this->table}";
             $req = Database::getBdd()->prepare($sql);
             $req->execute();
-            return $req->fetchAll();
+            return $req->fetchAll(PDO::FETCH_OBJ);
         }
 
         public function get($id)
@@ -80,7 +83,7 @@ use MVC\Config\Database;
             $sql = "SELECT * FROM $this->table WHERE id=$id";
             $req = Database::getBdd()->prepare($sql);
             $req->execute();
-            return $req->fetch();
+            return $req->fetch(PDO::FETCH_OBJ);
         }
     }
 ?>

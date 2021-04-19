@@ -5,16 +5,18 @@ use MVC\Models\TaskRepository;
 use MVC\Models\TaskModel;
 use MVC\Core\Controller;
 
+
 class TasksController extends Controller
 {
     function index()
     {
-       
-        $tasks = new TaskRepository();
-        $d['tasks'] = $tasks->getAll();
+        $tasks = new TaskModel();
+        $taskRespository = new TaskRepository();
+        $d['tasks'] = $taskRespository->getAll($tasks);
         $this->set($d);
         $this->render("index");
     }
+
 
     function create()
     {
@@ -28,7 +30,7 @@ class TasksController extends Controller
             $tasks->setUpdate(date("Y-m-d H:i:s"));
             if ($taskSave->add($tasks))
             {
-                header("Location: " . WEBROOT . "tasks/index");
+                header("Location: " . WEBROOT . "Tasks/index");
             }
         }
 
@@ -49,10 +51,11 @@ class TasksController extends Controller
             $tasks->setTitle($_POST["title"]);
             $tasks->setDescription($_POST["description"]);
             $tasks->setUpdate(date("Y-m-d H:i:s"));
-            $tasks->setCreate($tasks->setCreate($id));
+            
             if ($taskEdit->edit($tasks))
             {
-                header("Location: " . WEBROOT . "tasks/index");
+                
+                header("Location: " . WEBROOT . "Tasks/index");
             }
         }
         $this->set($d);
@@ -64,7 +67,7 @@ class TasksController extends Controller
         $task = new TaskRepository();
         if ($task->delete($id))
         {
-            header("Location: " . WEBROOT . "tasks/index");
+            header("Location: " . WEBROOT . "Tasks/index");
         }
     }
 }
